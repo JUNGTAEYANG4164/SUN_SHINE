@@ -1,15 +1,16 @@
 # esp_wifi_repeater
-A full functional WiFi repeater (correctly: a WiFi NAT router)
+모든 기능이 포함된 WiFi repeater (correctly: a WiFi NAT router)
 
-This is an implementation of a WiFi NAT router on the esp8266 and esp8285. It also includes a basic firewall with ACLs, port mapping, traffic shaping, hooks for remote monitoring (or packet sniffing), MQTT management interface, and power management. For a setup with multiple routers in a mesh to cover a larger area a new mode "Automesh" has been included https://github.com/martin-ger/esp_wifi_repeater#automesh-mode .
+이것은 esp8266 과 esp8285로 Wifi NAT router 를 구현합니다. ACLs를 포함한 방화벽, 포트 맵핑, 트래픽 쉐이핑(제어), 원격 모니터링(또는 패킷 스니핑), MQTT 관리 인터페이스, 그리고 전원관리 또한 포함하고 있습니다. 넓은 매쉬형태의 여러개의 라우터 환경을 감당할수 있는 "Automash" 모드는 여기에 포함되어 있습니다 https://github.com/martin-ger/esp_wifi_repeater#automesh-mode .
 
-Typical usage scenarios include:
-- Simple range extender for an existing WiFi network
-- Setting up an additional WiFi network with different SSID/password for guests or IoT devices
-- Battery powered outdoor (mesh) networks
-- Monitor probe for WiFi traffic analysis 
+전형적인 사용 용도:
+- Wifi 네트워크 확장
+- 다른 SSID/password로 고객 또는 IoT 장치를 위한 새로운 Wifi 네트워크 구성
+- 배터리로 동작하는 휴대용 (메쉬형태의)네트워크
+- Wifi 트래빅 분석기
 
 The ESP acts as STA and as soft-AP and transparently forwards any IP traffic through it. As it uses NAT no routing entries are required neither on the network side nor on the connected stations. Stations are configured via DHCP by default in the 192.168.4.0/24 net and receive their DNS responder address from the existing WiFi network.
+ESP는 STA 와 soft-AP 모드로 동작하며 이것을 통해 IP트래픽을 전달시켜줍니다. 이것이 NAT 로 사용됨으로 네트워크와 연결스테이션에서의 라우팅이 필요하지 않습니다. 스테이션은 192.168.4.0/24네트워크를 사용하는 DHCP로 할당되며 DNS응답자 주소로 원래 존재하던 Wifi네트워크를 사용합니다.
 
 Measurements show, that it can achieve about 5 Mbps in both directions, so even streaming is possible.
 
@@ -48,6 +49,7 @@ If you did a mistake and you lost any contact with ESP you can still use the ser
 Advanced configuration has to be done via the command line on the console interface. This console is available either via the serial port at 115200 baud or via tcp port 7777 (e.g. "telnet 192.168.4.1 7777" from a connected STA).
 
 Use the following commands for an initial setup:
+기본 설정을 위해 다음 명령어를 사용하세요:
 - set ssid your_home_router's_SSID
 - set password your_home_router's_password
 - set ap_ssid ESP's_ssid
@@ -61,16 +63,27 @@ If you want to enter non-ASCII or special characters on the command line you can
 The command line understands a lot more commands:
 
 ## Basic commands
+## 기본 명령어
 Enough to get it working in nearly all environments.
+거의 모든 환경에서 동작 가능합니다.
 - help: prints a short help message
+- help: 짧은 도움말을 출력합니다
 - set [ssid|password] _value_: changes the settings for the uplink AP (WiFi config of your home-router), use password "none" for open networks.
+- set [ssid|password] _value_: uplink AP 의 설정을 변경합니다, open네트워크를 위해선 "none"을 비밀번호로 설정하세요.
 - set [ap_ssid|ap_password] _value_: changes the settings for the soft-AP of the ESP (for your stations)
+- set [ap_ssid|ap_password] _value_: ESP의 soft-AP (station들을 위한)설정을 변경합니다.
 - show [config|stats]: prints the current config or some status information and statistics
+- show [config|stats]: 현제 구성 또는 상태정보 그리고 통계를 출력합니다.
 - save [dhcp]: saves the current config parameters [+ the current DHCP leases] to flash
+- save [dhcp]: 현제 구성 매개 변수[+ 현제 DHCP 할당]를 flash에 저장합니다
 - lock [_password_]: saves and locks the current config, changes are not allowed. Password can be left open if already set before (Default is the password of the uplink WiFi)
+- lock [_password_]: 저장과 동시에 현제 구성을 잠급니다, 변경이 허락되지 않습니다. 빈 공간으로 열어두면 사전에 설정한 비밀번호로 설정됩니다(기본 비밀번호는 uplink Wifi의 비밀번호 입니다)
 - unlock _password_: unlocks the config, requires password from the lock command
+- unlock _password_: 구성잠금을 헤재합니다, lock 명령어로 입력한 비밀번호를 필요로합니다
 - reset [factory]: resets the esp, 'factory' optionally resets WiFi params to default values (works on a locked device only from serial console)
+- reset [factory]: esp를 리셋합니다, 'factory' 선택적으로 Wifi 매개 변수를 기본 구성값 으로 복구합니다 (잠겨진 장치에서만 시리얼 콘솔을 통해 작동합니다)
 - quit: terminates a remote session
+- quit: 연결을 파기합니다
 
 ## Advanced commands
 Most of the set-commands are effective only after save and reset.
@@ -134,13 +147,17 @@ In order to allow clients from the external network to connect to server port on
 However, to make sure that the expected device is listening at a certain IP address, it has to be ensured the this devices has the same IP address once it or the ESP is rebooted. To achieve this, either fixed IP addresses can be configured in the devices or the ESP has to remember its DHCP leases. This can be achieved with the "save dhcp" command. It saves the current state and all DHCP leases, so that they will be restored after reboot. DHCP leases can be listed with the "show stats" command.
 
 # Automesh Mode
+# Automesh 모드
 Sometimes you might want to use several esp_wifi_repeaters in a row or a mesh to cover a larger distance or area. Generally, this can be done without any problems with NAT routers, actually you will have several layers of NAT. However, this means connectivity is limited: all nodes can talk to the internet, but generally there's no direct IP connectivity between the nodes. And, of course, the available bandwidth goes down the more hops you need. But users have reported that even 5 esp_wifi_repeaters in a row work quite well.
+여러개의 esp_wifi_repeaters 를 연결하거나 넓은 범위를 지원하기위해 매쉬를 사용하고 싶을수 있습니다. 일반적으로, NAT라우터는 아무문제없이 작동하게 되 있습니다, 여러 레이어의 NAT을 구성하는것이지요. 그러나, 이 뜻은 연결이 제한되어있다는것입니다: 모든 노드는 인터넷과 통신할수 있습니다, 그러나 노드간의 직접적인 IP연결성은 없습니다. 그리고, 당연히, 사용가는한 대역또한 필요한 hops 수에 따라 줄어듭니다. 사용자들이 보고하길 직렬로 5개의 esp_wifi_repeaters 까지는 잘 작동한다고 합니다.
 
 In such a setup configuration is quite a time consuming and error-prone activity. To simplify that, the esp_wifi_repeater now has a new mode: "Automesh". Just configure the SSID and the password and switch "automesh" on. (either on the CLI with "set automesh 1" or on the Web interface with just select the checkbox). This will do the following:
+
 
 Each esp_wifi_repeater configured in that way will automatically offer a WiFi network on the AP with the same SSID/password as it is connected to. Clients can use the same WiFi settings for the original network or the repeated ones. Each esp_wifi_repeater configured with "automesh" will first search for the best other AP to connect to. This is the one which is closest to the original WiFi network and has the best signal strength (RSSI).
 
 The signal strength is easy to measure with a scan, but which is the one closest to the original WiFi network when you see several APs with the same SSID? Therefore the protocol use a somewhat dirty trick: the esp_wifi_repeaters in "automesh" mode manipulate their BSSID (actually, according to the IEEE 802.11 standard this is the "ESSID" as it is an AP, but the SDK calls it "BSSID"), i.e. the MAC address of their AP interface, which is send out with every beacon frame 10 about time times per second. It uses the format: 24:24:mm:rr:rr:rr. "24:24" is just the unique identifier of a repeater (there is a minimal probability that this collides with the real APs MAC, but we can neglect this, as we can change that prefix if really required). "mm" means the "mesh level", this is the distance in hops to the original WiFi network. The last three "rr:rr:rr" are just random numbers to distinguish the various ESPs. The original AP keeps its BSSID, i.e. the one without the prefix "24:24" is recognized as root, called mesh level 0.
+신호강도는 스캔으로 측정하기 쉽지만, 어떤것이 여러개의 같은 SSID의 AP중에서 기존 Wifi네트워크와 가까운것인지는 어떻게 알수 있을까요? 그래서 조금 더러운 수법의 프로토콜을 사용하로 했습니다: "automesh"모드의 esp_wifi_repeater 는 그들의 BSSID (----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------) 를 수정합니다, 그 예로 초마다 모든 beacon으로 보내는 AP인터페이스의 MAC주소를 이와 같은 형식으로 수정합니다: 24:24:mm:rr:rr:rr. "24:24" 는 리피터인가를 구분할 수 있는부분 입니다 (원래의 AP들의 MAC과 충돌할 가능성이 매우 적지만, 이대로 방치해도 괜찮습니다, 정말 필요하다면 사전설정을 바꿀 수 있습니다----------------------------------------------------------------------------------------------------------------------------------------). "mm" 은 "mesh level"을 뜻합니다, 이것은 근원 Wifi네트워크로 부터의 hops 거리입니다. 마지막 "rr:rr:rr" 은 여러개의 ESP를 구별하기 위한 랜덤 숫자입니다. 근원 AP는 원래 BSSID를 유지합니다, 그 예로 "24:24" 가 아닌 SSID는 root로 인식되며, mesh level0 으로 불립니다. 
 
 <img src="https://raw.githubusercontent.com/martin-ger/esp_wifi_repeater/master/AutoMesh.JPG">
 
