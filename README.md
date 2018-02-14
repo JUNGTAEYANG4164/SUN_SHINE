@@ -1,16 +1,16 @@
 # esp_wifi_repeater
-¸ğµç ±â´ÉÀÌ Æ÷ÇÔµÈ WiFi repeater (correctly: a WiFi NAT router)
+ëª¨ë“  ê¸°ëŠ¥ì´ í¬í•¨ëœ WiFi repeater (correctly: a WiFi NAT router)
 
-ÀÌ°ÍÀº esp8266 °ú esp8285·Î Wifi NAT router ¸¦ ±¸ÇöÇÕ´Ï´Ù. ACLs¸¦ Æ÷ÇÔÇÑ ¹æÈ­º®, Æ÷Æ® ¸ÊÇÎ, Æ®·¡ÇÈ ½¦ÀÌÇÎ(Á¦¾î), ¿ø°İ ¸ğ´ÏÅÍ¸µ(¶Ç´Â ÆĞÅ¶ ½º´ÏÇÎ), MQTT °ü¸® ÀÎÅÍÆäÀÌ½º, ±×¸®°í Àü¿ø°ü¸® ¶ÇÇÑ Æ÷ÇÔÇÏ°í ÀÖ½À´Ï´Ù. ³ĞÀº ¸Å½¬ÇüÅÂÀÇ ¿©·¯°³ÀÇ ¶ó¿ìÅÍ È¯°æÀ» °¨´çÇÒ¼ö ÀÖ´Â "Automash" ¸ğµå´Â ¿©±â¿¡ Æ÷ÇÔµÇ¾î ÀÖ½À´Ï´Ù https://github.com/martin-ger/esp_wifi_repeater#automesh-mode .
+ì´ê²ƒì€ esp8266 ê³¼ esp8285ë¡œ Wifi NAT router ë¥¼ êµ¬í˜„í•©ë‹ˆë‹¤. ACLsë¥¼ í¬í•¨í•œ ë°©í™”ë²½, í¬íŠ¸ ë§µí•‘, íŠ¸ë˜í”½ ì‰ì´í•‘(ì œì–´), ì›ê²© ëª¨ë‹ˆí„°ë§(ë˜ëŠ” íŒ¨í‚· ìŠ¤ë‹ˆí•‘), MQTT ê´€ë¦¬ ì¸í„°í˜ì´ìŠ¤, ê·¸ë¦¬ê³  ì „ì›ê´€ë¦¬ ë˜í•œ í¬í•¨í•˜ê³  ìˆìŠµë‹ˆë‹¤. ë„“ì€ ë§¤ì‰¬í˜•íƒœì˜ ì—¬ëŸ¬ê°œì˜ ë¼ìš°í„° í™˜ê²½ì„ ê°ë‹¹í• ìˆ˜ ìˆëŠ” "Automash" ëª¨ë“œëŠ” ì—¬ê¸°ì— í¬í•¨ë˜ì–´ ìˆìŠµë‹ˆë‹¤ https://github.com/martin-ger/esp_wifi_repeater#automesh-mode .
 
-ÀüÇüÀûÀÎ »ç¿ë ¿ëµµ:
-- Wifi ³×Æ®¿öÅ© È®Àå
-- ´Ù¸¥ SSID/password·Î °í°´ ¶Ç´Â IoT ÀåÄ¡¸¦ À§ÇÑ »õ·Î¿î Wifi ³×Æ®¿öÅ© ±¸¼º
-- ¹èÅÍ¸®·Î µ¿ÀÛÇÏ´Â ÈŞ´ë¿ë (¸Ş½¬ÇüÅÂÀÇ)³×Æ®¿öÅ©
-- Wifi Æ®·¡ºò ºĞ¼®±â
+ì „í˜•ì ì¸ ì‚¬ìš© ìš©ë„:
+- Wifi ë„¤íŠ¸ì›Œí¬ í™•ì¥
+- ë‹¤ë¥¸ SSID/passwordë¡œ ê³ ê° ë˜ëŠ” IoT ì¥ì¹˜ë¥¼ ìœ„í•œ ìƒˆë¡œìš´ Wifi ë„¤íŠ¸ì›Œí¬ êµ¬ì„±
+- ë°°í„°ë¦¬ë¡œ ë™ì‘í•˜ëŠ” íœ´ëŒ€ìš© (ë©”ì‰¬í˜•íƒœì˜)ë„¤íŠ¸ì›Œí¬
+- Wifi íŠ¸ë˜ ë¶„ì„ê¸°
 
 The ESP acts as STA and as soft-AP and transparently forwards any IP traffic through it. As it uses NAT no routing entries are required neither on the network side nor on the connected stations. Stations are configured via DHCP by default in the 192.168.4.0/24 net and receive their DNS responder address from the existing WiFi network.
-ESP´Â STA ¿Í soft-AP ¸ğµå·Î µ¿ÀÛÇÏ¸ç ÀÌ°ÍÀ» ÅëÇØ IPÆ®·¡ÇÈÀ» Àü´Ş½ÃÄÑÁİ´Ï´Ù. ÀÌ°ÍÀÌ NAT ·Î »ç¿ëµÊÀ¸·Î ³×Æ®¿öÅ©¿Í ¿¬°á½ºÅ×ÀÌ¼Ç¿¡¼­ÀÇ ¶ó¿ìÆÃÀÌ ÇÊ¿äÇÏÁö ¾Ê½À´Ï´Ù. ½ºÅ×ÀÌ¼ÇÀº 192.168.4.0/24³×Æ®¿öÅ©¸¦ »ç¿ëÇÏ´Â DHCP·Î ÇÒ´çµÇ¸ç DNSÀÀ´äÀÚ ÁÖ¼Ò·Î ¿ø·¡ Á¸ÀçÇÏ´ø Wifi³×Æ®¿öÅ©¸¦ »ç¿ëÇÕ´Ï´Ù.
+ESPëŠ” STA ì™€ soft-AP ëª¨ë“œë¡œ ë™ì‘í•˜ë©° ì´ê²ƒì„ í†µí•´ IPíŠ¸ë˜í”½ì„ ì „ë‹¬ì‹œì¼œì¤ë‹ˆë‹¤. ì´ê²ƒì´ NAT ë¡œ ì‚¬ìš©ë¨ìœ¼ë¡œ ë„¤íŠ¸ì›Œí¬ì™€ ì—°ê²°ìŠ¤í…Œì´ì…˜ì—ì„œì˜ ë¼ìš°íŒ…ì´ í•„ìš”í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤. ìŠ¤í…Œì´ì…˜ì€ 192.168.4.0/24ë„¤íŠ¸ì›Œí¬ë¥¼ ì‚¬ìš©í•˜ëŠ” DHCPë¡œ í• ë‹¹ë˜ë©° DNSì‘ë‹µì ì£¼ì†Œë¡œ ì›ë˜ ì¡´ì¬í•˜ë˜ Wifië„¤íŠ¸ì›Œí¬ë¥¼ ì‚¬ìš©í•©ë‹ˆë‹¤.
 
 Measurements show, that it can achieve about 5 Mbps in both directions, so even streaming is possible.
 
@@ -49,7 +49,7 @@ If you did a mistake and you lost any contact with ESP you can still use the ser
 Advanced configuration has to be done via the command line on the console interface. This console is available either via the serial port at 115200 baud or via tcp port 7777 (e.g. "telnet 192.168.4.1 7777" from a connected STA).
 
 Use the following commands for an initial setup:
-±âº» ¼³Á¤À» À§ÇØ ´ÙÀ½ ¸í·É¾î¸¦ »ç¿ëÇÏ¼¼¿ä:
+ê¸°ë³¸ ì„¤ì •ì„ ìœ„í•´ ë‹¤ìŒ ëª…ë ¹ì–´ë¥¼ ì‚¬ìš©í•˜ì„¸ìš”:
 - set ssid your_home_router's_SSID
 - set password your_home_router's_password
 - set ap_ssid ESP's_ssid
@@ -63,27 +63,27 @@ If you want to enter non-ASCII or special characters on the command line you can
 The command line understands a lot more commands:
 
 ## Basic commands
-## ±âº» ¸í·É¾î
+## ê¸°ë³¸ ëª…ë ¹ì–´
 Enough to get it working in nearly all environments.
-°ÅÀÇ ¸ğµç È¯°æ¿¡¼­ µ¿ÀÛ °¡´ÉÇÕ´Ï´Ù.
+ê±°ì˜ ëª¨ë“  í™˜ê²½ì—ì„œ ë™ì‘ ê°€ëŠ¥í•©ë‹ˆë‹¤.
 - help: prints a short help message
-- help: ÂªÀº µµ¿ò¸»À» Ãâ·ÂÇÕ´Ï´Ù
+- help: ì§§ì€ ë„ì›€ë§ì„ ì¶œë ¥í•©ë‹ˆë‹¤
 - set [ssid|password] _value_: changes the settings for the uplink AP (WiFi config of your home-router), use password "none" for open networks.
-- set [ssid|password] _value_: uplink AP ÀÇ ¼³Á¤À» º¯°æÇÕ´Ï´Ù, open³×Æ®¿öÅ©¸¦ À§ÇØ¼± "none"À» ºñ¹Ğ¹øÈ£·Î ¼³Á¤ÇÏ¼¼¿ä.
+- set [ssid|password] _value_: uplink AP ì˜ ì„¤ì •ì„ ë³€ê²½í•©ë‹ˆë‹¤, openë„¤íŠ¸ì›Œí¬ë¥¼ ìœ„í•´ì„  "none"ì„ ë¹„ë°€ë²ˆí˜¸ë¡œ ì„¤ì •í•˜ì„¸ìš”.
 - set [ap_ssid|ap_password] _value_: changes the settings for the soft-AP of the ESP (for your stations)
-- set [ap_ssid|ap_password] _value_: ESPÀÇ soft-AP (stationµéÀ» À§ÇÑ)¼³Á¤À» º¯°æÇÕ´Ï´Ù.
+- set [ap_ssid|ap_password] _value_: ESPì˜ soft-AP (stationë“¤ì„ ìœ„í•œ)ì„¤ì •ì„ ë³€ê²½í•©ë‹ˆë‹¤.
 - show [config|stats]: prints the current config or some status information and statistics
-- show [config|stats]: ÇöÁ¦ ±¸¼º ¶Ç´Â »óÅÂÁ¤º¸ ±×¸®°í Åë°è¸¦ Ãâ·ÂÇÕ´Ï´Ù.
+- show [config|stats]: í˜„ì œ êµ¬ì„± ë˜ëŠ” ìƒíƒœì •ë³´ ê·¸ë¦¬ê³  í†µê³„ë¥¼ ì¶œë ¥í•©ë‹ˆë‹¤.
 - save [dhcp]: saves the current config parameters [+ the current DHCP leases] to flash
-- save [dhcp]: ÇöÁ¦ ±¸¼º ¸Å°³ º¯¼ö[+ ÇöÁ¦ DHCP ÇÒ´ç]¸¦ flash¿¡ ÀúÀåÇÕ´Ï´Ù
+- save [dhcp]: í˜„ì œ êµ¬ì„± ë§¤ê°œ ë³€ìˆ˜[+ í˜„ì œ DHCP í• ë‹¹]ë¥¼ flashì— ì €ì¥í•©ë‹ˆë‹¤
 - lock [_password_]: saves and locks the current config, changes are not allowed. Password can be left open if already set before (Default is the password of the uplink WiFi)
-- lock [_password_]: ÀúÀå°ú µ¿½Ã¿¡ ÇöÁ¦ ±¸¼ºÀ» Àá±Ş´Ï´Ù, º¯°æÀÌ Çã¶ôµÇÁö ¾Ê½À´Ï´Ù. ºó °ø°£À¸·Î ¿­¾îµÎ¸é »çÀü¿¡ ¼³Á¤ÇÑ ºñ¹Ğ¹øÈ£·Î ¼³Á¤µË´Ï´Ù(±âº» ºñ¹Ğ¹øÈ£´Â uplink WifiÀÇ ºñ¹Ğ¹øÈ£ ÀÔ´Ï´Ù)
+- lock [_password_]: ì €ì¥ê³¼ ë™ì‹œì— í˜„ì œ êµ¬ì„±ì„ ì ê¸‰ë‹ˆë‹¤, ë³€ê²½ì´ í—ˆë½ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤. ë¹ˆ ê³µê°„ìœ¼ë¡œ ì—´ì–´ë‘ë©´ ì‚¬ì „ì— ì„¤ì •í•œ ë¹„ë°€ë²ˆí˜¸ë¡œ ì„¤ì •ë©ë‹ˆë‹¤(ê¸°ë³¸ ë¹„ë°€ë²ˆí˜¸ëŠ” uplink Wifiì˜ ë¹„ë°€ë²ˆí˜¸ ì…ë‹ˆë‹¤)
 - unlock _password_: unlocks the config, requires password from the lock command
-- unlock _password_: ±¸¼ºÀá±İÀ» ÇìÀçÇÕ´Ï´Ù, lock ¸í·É¾î·Î ÀÔ·ÂÇÑ ºñ¹Ğ¹øÈ£¸¦ ÇÊ¿ä·ÎÇÕ´Ï´Ù
+- unlock _password_: êµ¬ì„±ì ê¸ˆì„ í—¤ì¬í•©ë‹ˆë‹¤, lock ëª…ë ¹ì–´ë¡œ ì…ë ¥í•œ ë¹„ë°€ë²ˆí˜¸ë¥¼ í•„ìš”ë¡œí•©ë‹ˆë‹¤
 - reset [factory]: resets the esp, 'factory' optionally resets WiFi params to default values (works on a locked device only from serial console)
-- reset [factory]: esp¸¦ ¸®¼ÂÇÕ´Ï´Ù, 'factory' ¼±ÅÃÀûÀ¸·Î Wifi ¸Å°³ º¯¼ö¸¦ ±âº» ±¸¼º°ª À¸·Î º¹±¸ÇÕ´Ï´Ù (Àá°ÜÁø ÀåÄ¡¿¡¼­¸¸ ½Ã¸®¾ó ÄÜ¼ÖÀ» ÅëÇØ ÀÛµ¿ÇÕ´Ï´Ù)
+- reset [factory]: espë¥¼ ë¦¬ì…‹í•©ë‹ˆë‹¤, 'factory' ì„ íƒì ìœ¼ë¡œ Wifi ë§¤ê°œ ë³€ìˆ˜ë¥¼ ê¸°ë³¸ êµ¬ì„±ê°’ ìœ¼ë¡œ ë³µêµ¬í•©ë‹ˆë‹¤ (ì ê²¨ì§„ ì¥ì¹˜ì—ì„œë§Œ ì‹œë¦¬ì–¼ ì½˜ì†”ì„ í†µí•´ ì‘ë™í•©ë‹ˆë‹¤)
 - quit: terminates a remote session
-- quit: ¿¬°áÀ» ÆÄ±âÇÕ´Ï´Ù
+- quit: ì—°ê²°ì„ íŒŒê¸°í•©ë‹ˆë‹¤
 
 ## Advanced commands
 Most of the set-commands are effective only after save and reset.
@@ -147,9 +147,9 @@ In order to allow clients from the external network to connect to server port on
 However, to make sure that the expected device is listening at a certain IP address, it has to be ensured the this devices has the same IP address once it or the ESP is rebooted. To achieve this, either fixed IP addresses can be configured in the devices or the ESP has to remember its DHCP leases. This can be achieved with the "save dhcp" command. It saves the current state and all DHCP leases, so that they will be restored after reboot. DHCP leases can be listed with the "show stats" command.
 
 # Automesh Mode
-# Automesh ¸ğµå
+# Automesh ëª¨ë“œ
 Sometimes you might want to use several esp_wifi_repeaters in a row or a mesh to cover a larger distance or area. Generally, this can be done without any problems with NAT routers, actually you will have several layers of NAT. However, this means connectivity is limited: all nodes can talk to the internet, but generally there's no direct IP connectivity between the nodes. And, of course, the available bandwidth goes down the more hops you need. But users have reported that even 5 esp_wifi_repeaters in a row work quite well.
-¿©·¯°³ÀÇ esp_wifi_repeaters ¸¦ ¿¬°áÇÏ°Å³ª ³ĞÀº ¹üÀ§¸¦ Áö¿øÇÏ±âÀ§ÇØ ¸Å½¬¸¦ »ç¿ëÇÏ°í ½ÍÀ»¼ö ÀÖ½À´Ï´Ù. ÀÏ¹İÀûÀ¸·Î, NAT¶ó¿ìÅÍ´Â ¾Æ¹«¹®Á¦¾øÀÌ ÀÛµ¿ÇÏ°Ô µÇ ÀÖ½À´Ï´Ù, ¿©·¯ ·¹ÀÌ¾îÀÇ NATÀ» ±¸¼ºÇÏ´Â°ÍÀÌÁö¿ä. ±×·¯³ª, ÀÌ ¶æÀº ¿¬°áÀÌ Á¦ÇÑµÇ¾îÀÖ´Ù´Â°ÍÀÔ´Ï´Ù: ¸ğµç ³ëµå´Â ÀÎÅÍ³İ°ú Åë½ÅÇÒ¼ö ÀÖ½À´Ï´Ù, ±×·¯³ª ³ëµå°£ÀÇ Á÷Á¢ÀûÀÎ IP¿¬°á¼ºÀº ¾ø½À´Ï´Ù. ±×¸®°í, ´ç¿¬È÷, »ç¿ë°¡´ÂÇÑ ´ë¿ª¶ÇÇÑ ÇÊ¿äÇÑ hops ¼ö¿¡ µû¶ó ÁÙ¾îµì´Ï´Ù. »ç¿ëÀÚµéÀÌ º¸°íÇÏ±æ Á÷·Ä·Î 5°³ÀÇ esp_wifi_repeaters ±îÁö´Â Àß ÀÛµ¿ÇÑ´Ù°í ÇÕ´Ï´Ù.
+ì—¬ëŸ¬ê°œì˜ esp_wifi_repeaters ë¥¼ ì—°ê²°í•˜ê±°ë‚˜ ë„“ì€ ë²”ìœ„ë¥¼ ì§€ì›í•˜ê¸°ìœ„í•´ ë§¤ì‰¬ë¥¼ ì‚¬ìš©í•˜ê³  ì‹¶ì„ìˆ˜ ìˆìŠµë‹ˆë‹¤. ì¼ë°˜ì ìœ¼ë¡œ, NATë¼ìš°í„°ëŠ” ì•„ë¬´ë¬¸ì œì—†ì´ ì‘ë™í•˜ê²Œ ë˜ ìˆìŠµë‹ˆë‹¤, ì—¬ëŸ¬ ë ˆì´ì–´ì˜ NATì„ êµ¬ì„±í•˜ëŠ”ê²ƒì´ì§€ìš”. ê·¸ëŸ¬ë‚˜, ì´ ëœ»ì€ ì—°ê²°ì´ ì œí•œë˜ì–´ìˆë‹¤ëŠ”ê²ƒì…ë‹ˆë‹¤: ëª¨ë“  ë…¸ë“œëŠ” ì¸í„°ë„·ê³¼ í†µì‹ í• ìˆ˜ ìˆìŠµë‹ˆë‹¤, ê·¸ëŸ¬ë‚˜ ë…¸ë“œê°„ì˜ ì§ì ‘ì ì¸ IPì—°ê²°ì„±ì€ ì—†ìŠµë‹ˆë‹¤. ê·¸ë¦¬ê³ , ë‹¹ì—°íˆ, ì‚¬ìš©ê°€ëŠ”í•œ ëŒ€ì—­ë˜í•œ í•„ìš”í•œ hops ìˆ˜ì— ë”°ë¼ ì¤„ì–´ë“­ë‹ˆë‹¤. ì‚¬ìš©ìë“¤ì´ ë³´ê³ í•˜ê¸¸ ì§ë ¬ë¡œ 5ê°œì˜ esp_wifi_repeaters ê¹Œì§€ëŠ” ì˜ ì‘ë™í•œë‹¤ê³  í•©ë‹ˆë‹¤.
 
 In such a setup configuration is quite a time consuming and error-prone activity. To simplify that, the esp_wifi_repeater now has a new mode: "Automesh". Just configure the SSID and the password and switch "automesh" on. (either on the CLI with "set automesh 1" or on the Web interface with just select the checkbox). This will do the following:
 
@@ -157,7 +157,7 @@ In such a setup configuration is quite a time consuming and error-prone activity
 Each esp_wifi_repeater configured in that way will automatically offer a WiFi network on the AP with the same SSID/password as it is connected to. Clients can use the same WiFi settings for the original network or the repeated ones. Each esp_wifi_repeater configured with "automesh" will first search for the best other AP to connect to. This is the one which is closest to the original WiFi network and has the best signal strength (RSSI).
 
 The signal strength is easy to measure with a scan, but which is the one closest to the original WiFi network when you see several APs with the same SSID? Therefore the protocol use a somewhat dirty trick: the esp_wifi_repeaters in "automesh" mode manipulate their BSSID (actually, according to the IEEE 802.11 standard this is the "ESSID" as it is an AP, but the SDK calls it "BSSID"), i.e. the MAC address of their AP interface, which is send out with every beacon frame 10 about time times per second. It uses the format: 24:24:mm:rr:rr:rr. "24:24" is just the unique identifier of a repeater (there is a minimal probability that this collides with the real APs MAC, but we can neglect this, as we can change that prefix if really required). "mm" means the "mesh level", this is the distance in hops to the original WiFi network. The last three "rr:rr:rr" are just random numbers to distinguish the various ESPs. The original AP keeps its BSSID, i.e. the one without the prefix "24:24" is recognized as root, called mesh level 0.
-½ÅÈ£°­µµ´Â ½ºÄµÀ¸·Î ÃøÁ¤ÇÏ±â ½±Áö¸¸, ¾î¶²°ÍÀÌ ¿©·¯°³ÀÇ °°Àº SSIDÀÇ APÁß¿¡¼­ ±âÁ¸ Wifi³×Æ®¿öÅ©¿Í °¡±î¿î°ÍÀÎÁö´Â ¾î¶»°Ô ¾Ë¼ö ÀÖÀ»±î¿ä? ±×·¡¼­ Á¶±İ ´õ·¯¿î ¼ö¹ıÀÇ ÇÁ·ÎÅäÄİÀ» »ç¿ëÇÏ·Î Çß½À´Ï´Ù: "automesh"¸ğµåÀÇ esp_wifi_repeater ´Â ±×µéÀÇ BSSID (----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------) ¸¦ ¼öÁ¤ÇÕ´Ï´Ù, ±× ¿¹·Î ÃÊ¸¶´Ù ¸ğµç beaconÀ¸·Î º¸³»´Â APÀÎÅÍÆäÀÌ½ºÀÇ MACÁÖ¼Ò¸¦ ÀÌ¿Í °°Àº Çü½ÄÀ¸·Î ¼öÁ¤ÇÕ´Ï´Ù: 24:24:mm:rr:rr:rr. "24:24" ´Â ¸®ÇÇÅÍÀÎ°¡¸¦ ±¸ºĞÇÒ ¼ö ÀÖ´ÂºÎºĞ ÀÔ´Ï´Ù (¿ø·¡ÀÇ APµéÀÇ MAC°ú Ãæµ¹ÇÒ °¡´É¼ºÀÌ ¸Å¿ì ÀûÁö¸¸, ÀÌ´ë·Î ¹æÄ¡ÇØµµ ±¦Âú½À´Ï´Ù, Á¤¸» ÇÊ¿äÇÏ´Ù¸é »çÀü¼³Á¤À» ¹Ù²Ü ¼ö ÀÖ½À´Ï´Ù----------------------------------------------------------------------------------------------------------------------------------------). "mm" Àº "mesh level"À» ¶æÇÕ´Ï´Ù, ÀÌ°ÍÀº ±Ù¿ø Wifi³×Æ®¿öÅ©·Î ºÎÅÍÀÇ hops °Å¸®ÀÔ´Ï´Ù. ¸¶Áö¸· "rr:rr:rr" Àº ¿©·¯°³ÀÇ ESP¸¦ ±¸º°ÇÏ±â À§ÇÑ ·£´ı ¼ıÀÚÀÔ´Ï´Ù. ±Ù¿ø AP´Â ¿ø·¡ BSSID¸¦ À¯ÁöÇÕ´Ï´Ù, ±× ¿¹·Î "24:24" °¡ ¾Æ´Ñ SSID´Â root·Î ÀÎ½ÄµÇ¸ç, mesh level0 À¸·Î ºÒ¸³´Ï´Ù. 
+ì‹ í˜¸ê°•ë„ëŠ” ìŠ¤ìº”ìœ¼ë¡œ ì¸¡ì •í•˜ê¸° ì‰½ì§€ë§Œ, ì–´ë–¤ê²ƒì´ ì—¬ëŸ¬ê°œì˜ ê°™ì€ SSIDì˜ APì¤‘ì—ì„œ ê¸°ì¡´ Wifië„¤íŠ¸ì›Œí¬ì™€ ê°€ê¹Œìš´ê²ƒì¸ì§€ëŠ” ì–´ë–»ê²Œ ì•Œìˆ˜ ìˆì„ê¹Œìš”? ê·¸ë˜ì„œ ì¡°ê¸ˆ ë”ëŸ¬ìš´ ìˆ˜ë²•ì˜ í”„ë¡œí† ì½œì„ ì‚¬ìš©í•˜ë¡œ í–ˆìŠµë‹ˆë‹¤: "automesh"ëª¨ë“œì˜ esp_wifi_repeater ëŠ” ê·¸ë“¤ì˜ BSSID (----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------) ë¥¼ ìˆ˜ì •í•©ë‹ˆë‹¤, ê·¸ ì˜ˆë¡œ ì´ˆë§ˆë‹¤ ëª¨ë“  beaconìœ¼ë¡œ ë³´ë‚´ëŠ” APì¸í„°í˜ì´ìŠ¤ì˜ MACì£¼ì†Œë¥¼ ì´ì™€ ê°™ì€ í˜•ì‹ìœ¼ë¡œ ìˆ˜ì •í•©ë‹ˆë‹¤: 24:24:mm:rr:rr:rr. "24:24" ëŠ” ë¦¬í”¼í„°ì¸ê°€ë¥¼ êµ¬ë¶„í•  ìˆ˜ ìˆëŠ”ë¶€ë¶„ ì…ë‹ˆë‹¤ (ì›ë˜ì˜ APë“¤ì˜ MACê³¼ ì¶©ëŒí•  ê°€ëŠ¥ì„±ì´ ë§¤ìš° ì ì§€ë§Œ, ì´ëŒ€ë¡œ ë°©ì¹˜í•´ë„ ê´œì°®ìŠµë‹ˆë‹¤, ì •ë§ í•„ìš”í•˜ë‹¤ë©´ ì‚¬ì „ì„¤ì •ì„ ë°”ê¿€ ìˆ˜ ìˆìŠµë‹ˆë‹¤----------------------------------------------------------------------------------------------------------------------------------------). "mm" ì€ "mesh level"ì„ ëœ»í•©ë‹ˆë‹¤, ì´ê²ƒì€ ê·¼ì› Wifië„¤íŠ¸ì›Œí¬ë¡œ ë¶€í„°ì˜ hops ê±°ë¦¬ì…ë‹ˆë‹¤. ë§ˆì§€ë§‰ "rr:rr:rr" ì€ ì—¬ëŸ¬ê°œì˜ ESPë¥¼ êµ¬ë³„í•˜ê¸° ìœ„í•œ ëœë¤ ìˆ«ìì…ë‹ˆë‹¤. ê·¼ì› APëŠ” ì›ë˜ BSSIDë¥¼ ìœ ì§€í•©ë‹ˆë‹¤, ê·¸ ì˜ˆë¡œ "24:24" ê°€ ì•„ë‹Œ SSIDëŠ” rootë¡œ ì¸ì‹ë˜ë©°, mesh level0 ìœ¼ë¡œ ë¶ˆë¦½ë‹ˆë‹¤. 
 
 <img src="https://raw.githubusercontent.com/martin-ger/esp_wifi_repeater/master/AutoMesh.JPG">
 
