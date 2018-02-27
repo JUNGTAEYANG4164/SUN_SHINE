@@ -3,7 +3,7 @@
 <br>
 
 ## jsOS - javascript Operating System
-jsOS는 sleeping dogs의 ctOS에 영감을 받은 프로젝프 입니다.
+jsOS는 sleeping dogs의 ctOS에 영감을 받은 프로젝트 입니다.
 ctOS의 데이터기능 컨트롤기능을 구현했으며
 nodeMCU를 이용하여 IoT를 구현했습니다.
 
