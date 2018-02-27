@@ -13,22 +13,28 @@ The ESP acts as STA and as soft-AP and transparently forwards any IP traffic thr
 ESP는 STA 와 soft-AP 모드로 동작하며 이것을 통해 IP트래픽을 전달시켜줍니다. 이것이 NAT 로 사용됨으로 네트워크와 연결스테이션에서의 라우팅이 필요하지 않습니다. 스테이션은 192.168.4.0/24네트워크를 사용하는 DHCP로 할당되며 DNS응답자 주소로 원래 존재하던 Wifi네트워크를 사용합니다.
 
 Measurements show, that it can achieve about 5 Mbps in both directions, so even streaming is possible.
+측정결과, 양방향 5 Mbps 의 성능을 보여줍니다, 따라서 스트리밍이 가능합니다.
 
 Some details are explained in this video: https://www.youtube.com/watch?v=OM2FqnMFCLw
+자세한 사항은 영상에 설명되어 있습니다: https://www.youtube.com/watch?v=OM2FqnMFCLw
 
 ### Note on WPA2 enterprise (PEAP)
 If you need a "converter" that translates a WPA2 enterprise network with PEAP authentication into a WPA2-PSK network, have a look at https://github.com/martin-ger/esp_peap_psk . Was trying to integrate this functionality into this project - however this is difficult, as WPA2 enterprise requires so much free heap during authentication that there is hardly any mem left for anything else. So I decided to leave that in a separate project.
+PEAP 인증방식의 WPA2 enterprise 네트워크를 WPA2-PSK 네트워크로 번역하는 "converter"가 필요하다면, 이 링크를 참조하세요 https://github.com/martin-ger/esp_peap_psk . 이 기능을 프로젝트에 통합하려했으나 - 어려웠습니다, WPA2 enterpris 가 인증과정에 많은 빈공간을 요구하면서 다른것을 위한 메모리가 남지 않았습니다. 그래서 다른 프로젝트로 구분하기로 결정했습니다.
 
 ### Note on WPA2 KRACK security issue
 The lastest firmware (after 17/Oct/2017) has been build with the patched version of the SDK 2.1.0 from Espressif that mitigates the KRACK (https://www.krackattacks.com/ ) attack.
+최신 펌웨어 (2017/8/17 이후)는 KRACK (https://www.krackattacks.com/ ) 공격을 완화시키는 버젼인 Espressif 의 SDK 2.1.0 로 빌드 되었습니다.
 
 # First Boot
 The esp_wifi_repeater starts with the following default configuration:
+esp_wifi_repeater 의 기본설정은 다음과 같습니다:
 
 - ap_ssid: MyAP, ap_password: none, ap_on: 1, ap_open: 1
 - network: 192.168.4.0/24
 
 After first boot (or factory reset) it will offer a WiFi network with an open AP and the ssid "MyAP". It does not yet try to automatically re-connect to an uplink AP (as it does not know a valid ssid or password).
+처음 부팅할때(또는 공장초기화) open AP와 ssid"MyAP"가 포함된 WiFi네트워크를 제공합니다. 이것은 자동으로 uplink AP 로 재-연결 시도하지 않습니다.(올바른 ssid또는 비밀 번호를 모르기 때문에)
 
 Connect to this WiFi network and do the basic configuration either via a simple web interface or the full config with all options via the console. 
 
@@ -143,6 +149,7 @@ With "set status_led GPIOno" the GPIO pin can be changed (any value > 16, e.g. "
 
 # Port Mapping
 In order to allow clients from the external network to connect to server port on the internal network, ports have to be mapped. An external port is mapped to an internal port of a specific internal IP address. Use the "portmap add" command for that. Port mappings can be listed with the "show" command and are saved with the current config. 
+외부 네트워크의 클라이언트가 내부 네트워크의 서버 포트에 연결할 수 있도록 하려면, 포트를 매핑 해야 합니다. 외부 포트는 특정 내부 IP주소의 내부 포트에 매핑 됩니다. 이를 위해서는 "portmapadd"명령을 사용합니다. 포트 매핑은 "show"명령으로 나열될 수 있으며 현재 구성으로 저장됩니다.
 
 However, to make sure that the expected device is listening at a certain IP address, it has to be ensured the this devices has the same IP address once it or the ESP is rebooted. To achieve this, either fixed IP addresses can be configured in the devices or the ESP has to remember its DHCP leases. This can be achieved with the "save dhcp" command. It saves the current state and all DHCP leases, so that they will be restored after reboot. DHCP leases can be listed with the "show stats" command.
 
